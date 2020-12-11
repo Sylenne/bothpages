@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<!-- keep the line below for OpenProcessing compatibility -->
+	<script src="https://www.openprocessing.org/openprocessing_sketch.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script>
+
+	<style>
+		html,
+body {
+	margin: 0;
+	padding: 0;
+}
+	</style>
+</head>
+
+<body>  
+
+	<canvas id="myCanvas" width="100vw" height="100vh" style="border:0px solid #d3d3d3;">
+</canvas>
+
+<script>
+var c = document.getElementById("myCanvas");
+
+let font1;
+let img;
+let imgs = [];
+let pg;
+let slider;
+let firstCopyW, firstCopyH;
+let angle1 = 0;
+let scalar = 20;
+
+
+
+function preload() {
+  font1 = loadFont('itc-avant-garde-gothic-std-bold-589572c7e9955.otf');
+
+}
+
+function setup() {
+	createCanvas(windowWidth, windowHeight)
+		pixelDensity(1.0);
+  
+	
+	
+	img = createGraphics(windowWidth,windowHeight);
+	img.background(255);
+	img.fill(0);
+	img.textFont(font1);
+	img.textSize(500);
+	img.translate(width / 2, height / 2);
+	img.textAlign(CENTER, CENTER);
+}
+
+
+
+function draw() {
+
+	background(0);
+	
+	firstCopyW = windowWidth/5;
+	firstCopyH = windowHeight/5;
+	
+	let ang1 = radians(angle1);
+  let x1 = scalar * cos(ang1);
+	
+	img.background(255);
+	push();
+	img.translate(x1, 0);
+	pop();
+	img.text("SHASHAMANI", 0, 0);
+	
+	for(let i = 10; i > 1; i--){
+		imageMode(CENTER);
+    push();
+    translate(width / 2, height / 2);
+		image(img, 0, 0, firstCopyW*i, firstCopyH*i);
+		pop();
+	}
+
+	angle1 += 1;
+}
+</script>
+
+<canvas id="myCanvas2"  style="border:0px solid #d3d3d3;">
+</canvas>
+<script>
+var c = document.getElementById("myCanvas2");
+
+let theShader;
+
+function preload(){
+  theShader = loadShader('shader.vert', 'shader.frag');
+}
+
+function setup() {
+	pixelDensity(1.0);
+  createCanvas(windowWidth, windowHeight, WEBGL);
+}
+
+function draw() {
+  shader(theShader);
+
+  theShader.setUniform("u_resolution", [width, height]);
+  theShader.setUniform("u_time", millis() / 1000.0);
+  quad(-1, -1, 1, -1, 1, 1, -1, 1);
+}
+</script>
+
+
+	
+</body>
+
+</html>
